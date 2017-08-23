@@ -1,10 +1,12 @@
 import React from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import 'isomorphic-fetch'
+import Layout from '../layouts/Main'
 
 export default class PostsPage extends React.Component {
   static async getInitialProps () {
-    const res = await fetch('http://localhost:8080/posts')
+    const res = await fetch('http://www.thatyou.cn/wp-json/wp/v2/posts')
     const json = await res.json()
     return {
       data: json
@@ -12,29 +14,34 @@ export default class PostsPage extends React.Component {
   }
 
   render () {
-    let listItems = ''
-    if (this.props.data && this.props.data.length) {
-      listItems = this.props.data.map((item, index) =>
-        <li key={index.toString()}>{ item.title }</li>
-      )
-    }
     return (
-      <div>
+      <Layout>
         <Head>
           <title>Posts</title>
-          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         </Head>
-        <h1>Posts</h1>
-        <ul>{ listItems }</ul>
-        <style jsx>{`
-          div {
-            background: #ddd;
+        <ul>
+          {
+            this.props.data.map((item, index) => (
+              <li key={index.toString()} className="post_item"><Link href={{ pathname: '/post', query: { id: item.id } }}><a>{ item.title.rendered }</a></Link></li>
+            ))
           }
-          h1 {
+        </ul>
+        <style jsx>{`
+          .post_item {
+            margin: 10px 0;
+          }
+          .post_item a {
+            color: #444;
+            text-decoration: none;
+            font-family: '微软雅黑';
+            
+          }
+          .post_item a:hover {
             color: #dd3333;
+            text-decoration: underline;
           }
         `}</style>
-      </div>
+      </Layout>
     )
   }
 }

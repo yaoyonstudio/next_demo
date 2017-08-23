@@ -1,0 +1,25 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+    height: 100%;
+}
+
+li {
+    list-style: none;
+}
+
+$mainColor: #0a8acd;
+$subColor: #dd3333;
+
+.test {
+    width: 200px;
+    height: 200px;
+    border: 1px solid $subColor;
+    p {
+        color: $mainColor;
+    }
+}
+
